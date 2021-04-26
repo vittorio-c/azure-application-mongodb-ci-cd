@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Movies</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"  />
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="/home" class="navbar-brand">Home</a>
+            <a href="/movies?page=1" class="navbar-item">Movies</a>
+            <a href="/movies/stats" class="navbar-item">Stats</a>
+        </div>
+
+        <div class="body-content">
+            {% block content %}
+            {% endblock %}
+            <hr/>
+            <footer>
+                <p>&copy; 2021</p>
+            </footer>
+        </div>
+    </body>
+</html>
+

@@ -1,0 +1,68 @@
+div.movie--infos > li {
+    list-style-type: none;
+    font-size: 1.3rem;
+    /* font-weight: bold; */
+}
+
+div.movie__card {
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+div.movie--infos {
+    width: 70%;
+}
+
+div.movie--image img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain
+}
+
+.message {
+    font-weight: 600;
+    color: blue;
+}
+
+.navbar {
+    background-color: lightslategray;
+    font-size: 1em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+    padding: 8px 5px 8px 5px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar-brand {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.navbar-item {
+    font-variant: small-caps;
+    margin-left: 30px;
+}
+
+.body-content {
+    padding: 5px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+span.deactivated-link {
+    color: grey;
+    text-decoration: none;
+}
+
+div.movies_container {
+    display: flex;
+    align-items: stretch;
+}
+
+div.movies_container > aside {
+    margin-right: 2rem;
+    background-color: lightblue;
+}
