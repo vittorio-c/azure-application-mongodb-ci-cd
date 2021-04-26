@@ -35,3 +35,6 @@
 **Gestion du repo** : Vittorio
 - todo
 
+**Installation d'un serveur web pour traitement des requêtes**
+
+**Création d'une VM qui recevra l'application**

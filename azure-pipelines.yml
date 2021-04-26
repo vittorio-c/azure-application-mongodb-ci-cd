@@ -7,13 +7,23 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+  - job: Deploy
+    steps:
+    - script: echo Hello, world!
+      displayName: 'Run a one-line script'
+    - task: CopyFiles@2
+      displayName: 'Copy files'
+      inputs:
+        sourceFolder: '$(Build.Repository.LocalPath)'
+        contents: |
+          **/*
+          !.git/**/*
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
