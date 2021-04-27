@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- '*'
+- 'main'
 
 # Le système utilisé pour build, pas la VM de destination !
 pool:
