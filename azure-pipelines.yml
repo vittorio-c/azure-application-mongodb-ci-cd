@@ -25,9 +25,12 @@ steps:
   workingDirectory: .
 
 - task: CopyFiles@2
+  displayName: 'Copy files'
   inputs:
-    Contents: './**'
-    # TODO enlever le dossier env
+    contents: |
+      **/*
+      !.git/**/*
+      !env/
     # Ce dossier est un dossier sur l'agent de build
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
