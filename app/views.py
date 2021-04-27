@@ -1,11 +1,8 @@
-from flask import Flask
 from datetime import datetime
 from flask import Flask, render_template, request
-from utilities.paginate import get_pagination_routes
-import queries.movies as query_movie
-import queries.artists as query_artist
-
-app = Flask(__name__)
+from app.utilities.paginate import get_pagination_routes
+import app.queries.movies as query_movie
+import app.queries.artists as query_artist
 
 @app.route("/home")
 def hello():
