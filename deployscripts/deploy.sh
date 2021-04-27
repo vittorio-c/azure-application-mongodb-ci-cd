@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 
-# sudo -i -u eltov bash << EOF
-# echo "In"
-# whoami
+sudo -i -u azureuser bash << EOF
+echo "In"
+whoami
 
-# rm -rf ~/StatsApp
+rm -rf ~/MongoDbCinema
 
-# cp -r /VSTSAgent/_work/r1/a/_v-c-d.flask/drop/ ~/StatsApp
-# cd ~/StatsApp
+cp -r /VSTSAgent/_work/r1/a/_vittorio-c.azure-application-mongodb-ci-cd/movies-app-files/ ~/MongoDbCinema
+cd ~/MongoDbCinema
 
-# python3 -m venv env
-# source env/bin/activate
+deactivate
+python3 -m venv env
+source env/bin/activate
 
-# pip install wheel
-# pip install -r requirements.txt
-# EOF
-# echo "Out"
+pip install wheel
+pip install -r requirements.txt
+EOF
+echo "Out"
 
 # # we restart server to take changes into account
 # sudo systemctl restart statsapp
