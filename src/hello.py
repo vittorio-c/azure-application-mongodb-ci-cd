@@ -11,6 +11,13 @@ app = Flask(__name__)
 def hello():
     return "<h1>A great website for movie nerds</h1>"
 
+
+@app.route("/test")
+def test():
+    find = query_movie.get_test()
+    return render_template("test.html", find=find)
+
+
 @app.route("/movies")
 def movies():
     page_num = request.args.get('page') if request.args.get('page') else 1
