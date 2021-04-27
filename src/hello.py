@@ -5,7 +5,9 @@ from src.utilities.paginate import get_pagination_routes
 import src.queries.movies as query_movie
 import src.queries.artists as query_artist
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/', 
+            static_folder='static',
+            template_folder='templates')
 
 @app.route("/home")
 def hello():
