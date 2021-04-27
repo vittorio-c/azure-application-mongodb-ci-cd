@@ -39,4 +39,4 @@ steps:
   # des artefacts ou des fichiers construits lors du build
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Movies App Files'
+    ArtifactName: 'movies-app-files'
