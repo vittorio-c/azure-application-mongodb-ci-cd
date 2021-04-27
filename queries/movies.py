@@ -7,7 +7,12 @@ import base64
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-movie_collection = client.themoviedb.movies
+movie_collection = client.movie.movies
+
+def get_test():
+    find = movie_collection.find_one()
+
+    return find
 
 def get_movie(id):
     movie = movie_collection.find({'_id': id})
@@ -21,11 +26,15 @@ def get_movies_paginated(page_size, page_num, sorts = {}, order = 1):
 
     if len(sorts) > 0:
         agg_sorts = get_aggregate_sorts(sorts, order)
-        aggregate = [agg_sorts, skip, limit]
+        # aggregate = [agg_sorts, skip, limit]
+        aggregate = [skip, limit]
+
     else:
         # we default sorts to release_year and desc order
         agg_sorts = { "$sort" : { "release_year" : int(order) }}
-        aggregate = [agg_sorts, skip, limit]
+        # aggregate = [agg_sorts, skip, limit]
+        aggregate = [skip, limit]
+
 
     cursor = movie_collection.aggregate(aggregate)
 
