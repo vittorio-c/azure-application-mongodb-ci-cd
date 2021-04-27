@@ -38,3 +38,8 @@
 **Installation d'un serveur web pour traitement des requêtes**
 
 **Création d'une VM qui recevra l'application**
+
+## Doc
+
+"Create a Linux virtual machine scale set with an ARM template" :
+- <https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/quick-create-template-linux>

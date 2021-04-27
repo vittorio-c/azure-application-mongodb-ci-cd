@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# TODO
+# changer le nom de l'user pour coller à celui utilisé dans le template des VMs scale
+
+# TODO
+# cloner le repo
+
 # packages needed to install and compile uwsgi
 sudo apt-get update
 sudo apt install software-properties-common
