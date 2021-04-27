@@ -7,6 +7,8 @@ div.movie--infos > li {
 div.movie__card {
     margin-bottom: 2rem;
     display: flex;
+    border: 1px solid #efefef;
+    padding: 10px;
 }
 
 div.movie--infos {
@@ -57,12 +59,40 @@ span.deactivated-link {
     text-decoration: none;
 }
 
-div.movies_container {
-    display: flex;
-    align-items: stretch;
-}
 
 div.movies_container > aside {
     margin-right: 2rem;
     background-color: lightblue;
+    padding: 20px;
+    height: 100%;
+}
+
+i.far.fa-caret-square-right.previous-right, i.far.fa-caret-square-left.previous-left {
+    font-size: 30px;
+}
+
+
+a i.far.fa-caret-square-right.previous-right, a i.far.fa-caret-square-left.previous-left {
+    font-size: 30px;
+    color: #add9e5;
+}
+
+.col-sm-6.text-right {
+    text-align: right;
+}
+
+.movie--infos h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    color: #6d6d6d;
+}
+
+div.movie--infos {
+    width: 70%;
+    margin: 10px;
+}
+
+.movie--image {
+    width: 30%;
 }
