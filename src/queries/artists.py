@@ -1,4 +1,4 @@
-from app.connection.client import client
+from src.connection.client import client
 
 # Here goes all the queries for fetching artists from DB
 

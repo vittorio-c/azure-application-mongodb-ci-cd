@@ -1,8 +1,11 @@
+from flask import Flask
 from datetime import datetime
 from flask import Flask, render_template, request
-from app.utilities.paginate import get_pagination_routes
-import app.queries.movies as query_movie
-import app.queries.artists as query_artist
+from src.utilities.paginate import get_pagination_routes
+import src.queries.movies as query_movie
+import src.queries.artists as query_artist
+
+app = Flask(__name__)
 
 @app.route("/home")
 def hello():
@@ -25,3 +28,7 @@ def movies_stats():
     plot_urls_decoded = [plot_url.decode('utf8') for plot_url in plot_urls]
 
     return render_template('movies_stats.html', plot_urls=plot_urls_decoded)
+
+# if __name__ == "__main__":
+#     print('NNNNNAAAMMMME')
+# app.run()

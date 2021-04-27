@@ -1,7 +1,7 @@
 import pandas as pd
-from app.connection.client import client
-from app.queries.sorts import get_aggregate_sorts
-from app.utilities.plot import plot
+from src.connection.client import client
+from src.queries.sorts import get_aggregate_sorts
+from src.utilities.plot import plot
 from io import BytesIO
 import base64
 import matplotlib.pyplot as plt
