@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route("/home")
 def hello():
-    return "<h1>A great website for movie nerds</h1>"
+    return render_template("home.html")
 
 @app.route("/movies")
 def movies():
