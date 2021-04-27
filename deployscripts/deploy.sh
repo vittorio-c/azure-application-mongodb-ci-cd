@@ -17,5 +17,5 @@ pip3.8 install -r requirements.txt
 EOF
 echo "Out"
 
-# # we restart server to take changes into account
-# sudo systemctl restart statsapp
+# we restart server to take changes into account
+sudo systemctl restart mongocinema
