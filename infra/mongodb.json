@@ -1,0 +1,286 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "locationName": {
+            "type": "string"
+        },
+        "defaultExperience": {
+            "type": "string"
+        },
+        "isZoneRedundant": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "type": "Microsoft.Resources/deployments",
+            "name": "scalesetvnet_feb587e9-e060-4ca3-b2be-b02eb0e50015",
+            "subscriptionId": "05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa",
+            "resourceGroup": "cinema-mongodb",
+            "dependsOn": [],
+            "resources": [],
+            "properties": {
+                "mode": "Incremental",
+                "parameters": {},
+                "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2019-04-01",
+                            "name": "scalesetvnet",
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "location": "westeurope",
+                            "properties": {
+                                "provisioningState": "Succeeded",
+                                "resourceGuid": "9f6cf17a-6f48-49ad-a3fc-f9f273202b80",
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "10.0.0.0/16"
+                                    ]
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "scalesetsubnet",
+                                        "id": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/virtualNetworks/scalesetvnet/subnets/scalesetsubnet",
+                                        "etag": "W/\"f6496934-733c-4057-ae1f-7c785130a4d1\"",
+                                        "properties": {
+                                            "provisioningState": "Succeeded",
+                                            "addressPrefix": "10.0.0.0/24",
+                                            "ipConfigurations": [
+                                                {
+                                                    "id": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Compute/virtualMachineScaleSets/scaleset/virtualMachines/0/networkInterfaces/scalesetnic/ipConfigurations/scalesetipconfig"
+                                                }
+                                            ],
+                                            "delegations": [],
+                                            "privateEndpointNetworkPolicies": "Disabled",
+                                            "privateLinkServiceNetworkPolicies": "Enabled"
+                                        },
+                                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                                    }
+                                ],
+                                "virtualNetworkPeerings": [],
+                                "enableDdosProtection": false
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('name'), '/default')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces",
+            "properties": {
+                "dependsOn": [
+                    "Microsoft.Resources/deployments/scalesetvnet_feb587e9-e060-4ca3-b2be-b02eb0e50015"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name'))]"
+            ],
+            "apiVersion": "2020-04-01"
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "kind": "MongoDB",
+            "type": "Microsoft.DocumentDb/databaseAccounts",
+            "name": "[parameters('name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "databaseAccountOfferType": "Standard",
+                "locations": [
+                    {
+                        "id": "[concat(parameters('name'), '-', parameters('location'))]",
+                        "failoverPriority": 0,
+                        "locationName": "[parameters('locationName')]"
+                    }
+                ],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "ipRules": [
+                    {
+                        "ipAddressOrRange": "104.42.195.92"
+                    },
+                    {
+                        "ipAddressOrRange": "40.76.54.131"
+                    },
+                    {
+                        "ipAddressOrRange": "52.176.6.30"
+                    },
+                    {
+                        "ipAddressOrRange": "52.169.50.45"
+                    },
+                    {
+                        "ipAddressOrRange": "52.187.184.26"
+                    }
+                ],
+                "dependsOn": [],
+                "enableMultipleWriteLocations": false,
+                "capabilities": [
+                    {
+                        "name": "EnableMongo"
+                    },
+                    {
+                        "name": "DisableRateLimitingResponses"
+                    }
+                ],
+                "apiProperties": {
+                    "serverVersion": "4.0"
+                },
+                "enableFreeTier": true
+            },
+            "tags": {
+                "defaultExperience": "[parameters('defaultExperience')]",
+                "hidden-cosmos-mmspecial": ""
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "type": "Microsoft.Resources/deployments",
+            "name": "scalesetdbterm_feb587e9-e060-4ca3-b2be-b02eb0e50016",
+            "subscriptionId": "05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa",
+            "resourceGroup": "cinema-mongodb",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name'))]"
+            ],
+            "resources": [],
+            "properties": {
+                "mode": "Incremental",
+                "parameters": {
+                    "privateEndpointName": {
+                        "value": "scalesetdbterm"
+                    },
+                    "privateEndpointConnectionId": {
+                        "value": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/privateEndpoints/privateLinkServiceConnections/scalesetdbterm_b4db991b-4793-49af-b77d-bbf26af05014"
+                    },
+                    "privateEndpointConnectionName": {
+                        "value": "scalesetdbterm_b4db991b-4793-49af-b77d-bbf26af05014"
+                    },
+                    "privateEndpointId": {
+                        "value": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/privateEndpoints/scalesetdbterm"
+                    },
+                    "privateEndpointApiVersion": {
+                        "value": "2019-04-01"
+                    },
+                    "privateLinkServiceId": {
+                        "value": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourcegroups/cinema-mongodb/providers/Microsoft.DocumentDB/databaseAccounts/scalesetdb"
+                    },
+                    "groupId": {
+                        "value": "MongoDB"
+                    },
+                    "subnetId": {
+                        "value": "/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/virtualNetworks/scalesetvnet/subnets/scalesetsubnet"
+                    },
+                    "location": {
+                        "value": "westeurope"
+                    },
+                    "tags": {
+                        "value": {}
+                    }
+                },
+                "templatelink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.36506646.0/DeploymentTemplates/PrivateEndpointForCosmosAccount.json"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "PrivateDns-feb587e9e0604ca3b2beb02eb0e50017",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[string('cinema-mongodb')]",
+            "dependsOn": [
+                "[string('scalesetdbterm_feb587e9-e060-4ca3-b2be-b02eb0e50016')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateDnsZones",
+                            "apiVersion": "2018-09-01",
+                            "name": "[string('privatelink.mongo.cosmos.azure.com')]",
+                            "location": "global",
+                            "tags": {},
+                            "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+                            "apiVersion": "2018-09-01",
+                            "name": "[concat(string('privatelink.mongo.cosmos.azure.com'), '/', uniqueString(string('/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/virtualNetworks/scalesetvnet')))]",
+                            "location": "global",
+                            "dependsOn": [
+                                "[string('privatelink.mongo.cosmos.azure.com')]"
+                            ],
+                            "properties": {
+                                "virtualNetwork": {
+                                    "id": "[string('/subscriptions/05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa/resourceGroups/cinema-mongodb/providers/Microsoft.Network/virtualNetworks/scalesetvnet')]"
+                                },
+                                "registrationEnabled": false
+                            }
+                        },
+                        {
+                            "apiVersion": "2017-05-10",
+                            "name": "EndpointDnsRecords-feb587e9e0604ca3b2beb02eb0e50017",
+                            "type": "Microsoft.Resources/deployments",
+                            "dependsOn": [
+                                "[string('privatelink.mongo.cosmos.azure.com')]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "templatelink": {
+                                    "contentVersion": "1.0.0.0",
+                                    "uri": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.36506646.0/DeploymentTemplates/PrivateDnsForPrivateEndpoint.json"
+                                },
+                                "parameters": {
+                                    "privateDnsName": {
+                                        "value": "[string('privatelink.mongo.cosmos.azure.com')]"
+                                    },
+                                    "privateEndpointNicResourceId": {
+                                        "value": "[reference('scalesetdbterm_feb587e9-e060-4ca3-b2be-b02eb0e50016').outputs.networkInterfaceId.value]"
+                                    },
+                                    "nicRecordsTemplateUri": {
+                                        "value": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.36506646.0/DeploymentTemplates/PrivateDnsForPrivateEndpointNic.json"
+                                    },
+                                    "ipConfigRecordsTemplateUri": {
+                                        "value": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.36506646.0/DeploymentTemplates/PrivateDnsForPrivateEndpointIpConfig.json"
+                                    },
+                                    "uniqueId": {
+                                        "value": "feb587e9e0604ca3b2beb02eb0e50017"
+                                    },
+                                    "existingRecords": {
+                                        "value": {}
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "subscriptionId": "[string('05e7c7d0-ca41-4761-b3e1-8e91a0f1c7fa')]"
+        }
+    ],
+    "outputs": {}
+}
