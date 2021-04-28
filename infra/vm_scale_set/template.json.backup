@@ -51,7 +51,7 @@
             }
         },
         "adminPasswordOrKey": {
-            "type": "securestring",
+            "type": "securestring", // ici
             "metadata": {
                 "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
             }
@@ -173,7 +173,7 @@
                                 "id": "[variables('frontEndIPConfigID')]"
                             },
                             "protocol": "Tcp",
-                            "frontendPortRangeStart": "[variables('natStartPort')]",
+                            "frontendPortRangeStart": "[variables('natStartPort')]", // ici
                             "frontendPortRangeEnd": "[variables('natEndPort')]",
                             "backendPort": "[variables('natBackendPort')]"
                         }
@@ -185,7 +185,7 @@
                                 "id": "[variables('frontEndIPConfigID')]"
                             },
                             "protocol": "Tcp",
-                            "frontendPortRangeStart": 9000,
+                            "frontendPortRangeStart": 9000, // ici
                             "frontendPortRangeEnd": 9120,
                             "backendPort": 9000
                         }
@@ -208,9 +208,9 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
             ],
             "properties": {
-                "overprovision": "false",
+                "overprovision": "false", // ici
                 "upgradePolicy": {
-                    "mode": "Manual"
+                    "mode": "Manual" // ici
                 },
                 "virtualMachineProfile": {
                     "storageProfile": {
