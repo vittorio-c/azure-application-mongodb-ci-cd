@@ -52,6 +52,7 @@
         },
         "adminPasswordOrKey": {
             "type": "securestring",
+            "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC10a5xXhVXSYtSDUkN5gbJkqfin8JzDwcIq3kvHhDHY7RW3dMH8V23MU/oA1jxNsYElLVbU/mAGcLDdzVvrT+VVnluKW8ekOeso31B4/Hod6mGvVgV8sMQm0LO/g+I5ZbkRSODXQA6+wwZ9eXVzyBbifRpK0BoxQ9b8dY0p05ClDmJURCn48hzkxzpOFcBcJyKuU+SuI0Ar03DTSZiJQMxhuh6TVzm6eJBCRvCl74uEanokqH3Cqwob1xhdXPYFPnT2sJmJ3eVBE20gIwmv+LGqXOx/LzOmKphflfdLxO0CguXDTW+jr2AsEoc2yPp25ZFFaiiVNt/LXxOHLZ17reLt0Kf7kpmrFdKjK81nOeLOlkE+pjSVFy7h7oqPW6b1o/VOmX/iGGoQA4sOeqpC+xKN8RdSWwjeL9kpGgJijLSpmU5oHxSQr+inKVtx70jy1XHHbsKUeMY13iNB+tkkaDskNxmV7Y5xspHN5xDtGJCA11UrSrRcwX7HkNwx4uU2cE= armymen@home-m",
             "metadata": {
                 "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
             }
@@ -72,8 +73,8 @@
         }
     },
     "variables": {
-        "addressPrefix": "10.0.1.0/16",
-        "subnetPrefix": "10.0.1.0/24",
+        "addressPrefix": "10.0.0.0/16",
+        "subnetPrefix": "10.0.0.0/24",
         "virtualNetworkName": "[concat(parameters('vmssName'), 'vnet')]",
         "publicIPAddressName": "[concat(parameters('vmssName'), 'pip')]",
         "subnetName": "[concat(parameters('vmssName'), 'subnet')]",
@@ -105,7 +106,9 @@
                     }
                 ]
             }
-        }
+        },
+        "loadBalancerRuleName": "[concat(parameters('vmssName'), 'lb-rule')]",
+        "probName": "[concat(parameters('vmssName'), 'probe')]"
     },
     "resources": [
         {
@@ -189,6 +192,39 @@
                             "frontendPortRangeEnd": 9120,
                             "backendPort": 9000
                         }
+                    }
+                ],
+                "probes": [
+                    {
+                        "properties": {
+                            "protocol": "Http",
+                            "port": 5000,
+                            "intervalInSeconds": 15,
+                            "numberOfProbes": 2,
+                            "requestPath": "/"
+                        },
+                        "name": "[variables('probName')]"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('loadBalancerName'), 'LoadBalancerFrontEnd')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('loadBalancerName'), variables('bePoolName'))]"
+                            },
+                            "probe": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('loadBalancerName'), variables('probName'))]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": 80,
+                            "backendPort": 5000,
+                            "idleTimeoutInMinutes": 15,
+                            "enableTcpReset": false
+                        },
+                        "name": "[variables('loadBalancerRuleName')]"
                     }
                 ]
             }
