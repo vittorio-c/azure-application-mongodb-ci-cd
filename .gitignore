@@ -101,9 +101,8 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# !!! very bad practice !!! Don't do it in production !!! :
 # removed .env for developpement purpose :
-# .env
+.env
 .venv
 env/
 venv/
