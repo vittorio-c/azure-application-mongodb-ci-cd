@@ -1,63 +1,36 @@
-# azure-application-mongodb-ci-cd
+# About
 
-## TODO
+This student collaborative project deploys a Flask/MongoDB application into Microsoft Azure cloud.
 
-- Migrer la bdd MongoDB sur Azure
-- Remplir la BDD avec des données
-- Paramètrer le déploiement continue de l'app dans Azur Devops
-- Sécuriser la BDD :  à voir
-- Amélioration du frontend (en option du JS + intégration continue)
-- Sécurité : DMZ à voir
+It uses Azure ARM templates to deploy a VM Scale Set (`./infra/vm_scale_set/template.json`), a load balancer (`./infra/load_balancer.json`) and a MongoDB instance (`./infra/mongodb.json`).
 
-## TODO détails
+Is uses a `./infra/vm_post_provision.sh` script to apply some command on VMs after deployment is done.
 
-**Migrer la bdd MongoDB sur Azure** : Steeve éventuellement
-- Créer l'instance MongoDB sur Azure
-- Récupérer les identifiants de connexion
-- Insérer les identifiants dans le code source
+It uses a `deploy.sh` script to deploy the app into the VMs when new changes are pushed to the repository, via Azure Devops CI/CD.
 
-**Migrer la BDD avec des données**  : Steeve, Sophie en support
-- Récupérer les données de la base Atlas
-- Les injecter dans la nouvelle base Azur
+# Commands
 
-**Paramètrer le déploiement continue de l'app dans Azur Devops** : Sophie en support, Vittorio
-- Rattacher le compte Azur au compte Azur Devops
-- Rattacher le pipeline au repo Github
-- Paramètrer la construction du build
-- Paramètrer la fréquence de déploiement
+## Create a resource group
 
-**Amélioration du frontend** : Sophie
-- todo
+`az group create --name cinema-mongodb --location westeurope`
 
-**Sécurité** : Yohan
-- todo
+## Deploy template into resource group
 
-**Gestion du repo** : Vittorio
-- todo
+```
+az deployment group create \
+    --resource-group cinema-mongodb \
+    --template-uri https://raw.githubusercontent.com/vittorio-c/azure-application-mongodb-ci-cd/vittorio/infra/vm_scale_set/template.json
+```
 
-**Installation d'un serveur web pour traitement des requêtes**
-
-**Création d'une VM qui recevra l'application**
-
-## Doc
+# Doc
 
 "Create a Linux virtual machine scale set with an ARM template" :
 - <https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/quick-create-template-linux>
 
-## Commandes de création de resources
 
-#### Create a resource group
-az group create --name cinema-mongodb --location westeurope
+# Todo
 
-#### Deploy template into resource group
-
-az deployment group create \
-    --resource-group cinema-mongodb \
-    --template-uri https://raw.githubusercontent.com/vittorio-c/azure-application-mongodb-ci-cd/vittorio/infra/vm_scale_set/template.json
-
-## Todo
-
-### Infra
+## Infra
 
 - [x] Mise en place du scaleset derrière un loadBalancer
 - [ ] Ajouter une instance MongoDB
